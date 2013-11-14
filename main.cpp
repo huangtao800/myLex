@@ -113,6 +113,7 @@ void readInput()
                     if(c=='}'){isInAction=false;}
                     if(isInAction){
                         action+=c;
+                        break;
                     }
                 }
             }
