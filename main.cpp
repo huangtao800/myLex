@@ -9,6 +9,7 @@ void readInput();
 void generateProgram();
 void printInclude(ofstream& output);
 void printReList();
+string findRE(string schema);
 
 string declare="";
 vector<pair<string,string> > reList;
@@ -57,6 +58,7 @@ void readInput()
                char c;
 
                while(ss>>c){
+                    if(c=='\t'||c==' '){continue;}
                     if(c=='\\'){
                         ss>>c;
                         switch (c){
@@ -86,10 +88,47 @@ void readInput()
     //处理动作
     line="";
     while(getline(input,line)){
-        //cout<<line;
-        if(line.find("%%")!=-1){}
+        if(line.size()==0){continue;}
+        if(line.find("%%")!=string::npos){
+            stringstream ss(line);
+            string schema;
+            string re;
+            if(ss>>schema){
+                 if(*(schema.begin())=='{'){
+                    string temp=schema.substr(1,schema.size()-2);
+                    re=findRE(temp);
+                 }else if(*(schema.begin())=='\''){
+                    string temp=schema.substr(1,schema.size()-2);
+                    re=temp;
+                 }else{
+                     re=schema;
+                 }
+
+                string action="";
+                char c;
+                bool isInAction=false;
+                while(ss>>c){
+                    if(c=='\t'||c==' '){continue;}
+                    if(c=='{'){isInAction=true;}
+                    if(c=='}'){isInAction=false;}
+                    if(isInAction){
+                        action+=c;
+                    }
+                }
+            }
+        }
     }
 
+}
+
+string findRE(string schema){
+    for(int i=0;i<reList.size();i++){
+        pair<string,string> temp=reList[i];
+        if(schema.compare(temp.first)==0){
+            return temp.second;
+        }
+    }
+    return "";
 }
 
 void generateProgram(){
