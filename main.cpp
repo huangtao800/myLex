@@ -88,8 +88,9 @@ void readInput()
     //处理动作
     line="";
     while(getline(input,line)){
+        cout<<line<<endl;
         if(line.size()==0){continue;}
-        if(line.find("%%")!=string::npos){
+        if(line.find("%%")==string::npos){
             stringstream ss(line);
             string schema;
             string re;
@@ -113,10 +114,13 @@ void readInput()
                     if(c=='}'){isInAction=false;}
                     if(isInAction){
                         action+=c;
+                        actionList.push_back(make_pair(re,action));
                         break;
                     }
                 }
             }
+        }else{
+            break;
         }
     }
 
@@ -143,7 +147,7 @@ void printInclude(ofstream& output){
 }
 
 void printReList(){
-    for(int i=0;i<reList.size();i++){
+    for(int i=0;i<actionList.size();i++){
         pair<string,string> temp=reList[i];
         cout<<temp.first<<"\t"<<temp.second<<endl;
     }
