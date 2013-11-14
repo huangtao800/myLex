@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1384350746 source:c:\workspace\codeblocks\lex\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<vector>
+
